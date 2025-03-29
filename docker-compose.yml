@@ -1,0 +1,26 @@
+version: '3'
+services:
+  frontend:
+    image: kuty-frontend:latest
+    build: .
+    ports:
+      - "3000:3000"
+  mariadb:
+    image: mariadb:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword  # ตั้งรหัสผ่านของ root user ของ MariaDB
+      MYSQL_DATABASE: mydatabase        # ตั้งชื่อฐานข้อมูลที่จะสร้างโดยอัตโนมัติ
+    ports:
+      - "3306:3306"  # เปิดพอร์ต 3306 ของเครื่อง Host
+    volumes:
+      - mariadb-data:/var/lib/mysql
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    environment:
+      PMA_HOST: mariadb  # กำหนด host ให้ phpMyAdmin เชื่อมต่อกับ MariaDB service
+      PMA_PORT: 3306     # กำหนดพอร์ตที่ phpMyAdmin จะใช้เชื่อมต่อกับ MariaDB
+    ports:
+      - "8080:80"
+
+volumes:
+  mariadb-data:
