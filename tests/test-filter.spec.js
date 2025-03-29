@@ -11,7 +11,6 @@ test('test-filter-location', async ({ page }) => {
   await page.locator('div').filter({ hasText: '1โดย Kriengkai Seethong2025-' }).nth(3).click();
   const targetDiv = await page.locator('div').filter({ hasText: '1โดย Kriengkai Seethong2025-' }).nth(3);
   
-  // ตรวจสอบว่า element ที่มีข้อความตรงกับที่ต้องการมีอยู่
   await expect(targetDiv).toBeVisible(); 
 });
 
