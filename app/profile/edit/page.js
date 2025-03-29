@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
@@ -71,7 +72,7 @@ export default function EditProfile() {
           <div className={styles.profileHeaderContent}>
             <div className={styles.profileNameRow}>
               <h1 className={styles.profileName}>
-                {userData.firstName} {userData.lastName}
+                {userData?.firstName} {userData?.lastName}
               </h1>
             </div>
             <div className={styles.profileButtonRow}>
@@ -85,13 +86,13 @@ export default function EditProfile() {
             </div>
           </div>
           <p className={styles.profileFaculty}>
-            {userData.departmentNameTh} {userData.majorName}
+            {userData?.departmentNameTh} {userData?.majorName}
           </p>
           <h2>อีเมล์</h2>
-          <p>{userData.email}</p>
-          <p className={styles.profileEmail}>{userData.email}</p>
+          <p>{userData?.email}</p>
+          <p className={styles.profileEmail}>{userData?.email}</p>
           <h2>รายละเอียด</h2>
-          <p>{userData.description}</p>
+          <p>{userData?.description}</p>
         </div>
       </div>
       <hr className={styles.profileDivider} />

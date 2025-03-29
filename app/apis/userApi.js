@@ -2,7 +2,7 @@ import axios from 'axios';
 import { User } from '../models/user';
 import { Event } from '../models/event';
 
-const API_BASE_URL = 'http://localhost:8080';
+const API_BASE_URL = "https://kuty-backend-1-0-0.onrender.com";
 
 export const fetchUserData = async (userId) => {
   try {

@@ -1,8 +1,10 @@
 import axios from "axios";
 import { Event } from "../models/event";
 import { User } from "../models/user";
+import { Feedback, feedback } from "../models/feedback";
 
-const API_BASE_URL = "http://localhost:8080";
+const API_BASE_URL = "https://kuty-backend-1-0-0.onrender.com";
+
 
 export const fetchAllEvents = async () => {
     try {
@@ -108,6 +110,27 @@ export const deleteEvent = async (eventId) => {
       }
     } catch (error) {
       console.error('Error updating event image:', error);
+      throw error;
+    }
+  };
+
+  export const deleteParticipant = async (participantId, eventId, ownerId) => {
+    try {
+      const response = await axios.delete(`${API_BASE_URL}/user/kick`, {
+        data: {
+          ownerId,
+          eventId,
+          participantId
+        }
+      });
+
+      if (response.data.code === 'OK') {
+        return response.data.message;
+      } else {
+        throw new Error(response.data.message);
+      }
+    } catch (error){
+      console.error("Error deleting participant:", error);
       throw error;
     }
   };

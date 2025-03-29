@@ -13,10 +13,12 @@ export default function CreatedEvents() {
   const [loading, setLoading] = useState(true);
   const userId = user?.userId;
 
-  useEffect(() => {
-    fetchAllJoinedEvents(userId)
+   useEffect(() => {
+    if (!user?.userId) return;
+
+    fetchAllJoinedEvents(user.userId)
       .then((data) => {
-        const joinedEvents = data.filter(event => event.createdBy.userId !== userId);
+        const joinedEvents = data.filter(event => event.createdBy.userId !== user.userId);
         console.log(joinedEvents);
         setEvents(joinedEvents);
       })
@@ -27,7 +29,7 @@ export default function CreatedEvents() {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [user]);
 
   const handleQuit = (eventId) => {
     setEvents(events.filter((event) => event.eventId !== eventId));

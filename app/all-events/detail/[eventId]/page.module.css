@@ -44,6 +44,7 @@
 .event-detail-date-location,
 .event-participants {
   display: flex;
+  flex-direction: column;
 }
 
 .event-detail-date-location {
@@ -126,3 +127,160 @@
 .backButton:hover {
   text-decoration: underline;
 }
+
+.event-participants {
+  width: 100%;
+  max-width: 500px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.event-participants p {
+  text-align: center;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.participants-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.participant-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.participant-item:last-child {
+  border-bottom: none;
+}
+
+.kick-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.kick-button:hover {
+  background-color: #c0392b;
+}
+
+.event-feedback {
+  margin-top: 40px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+}
+
+.feedback-list {
+  list-style: none;
+  padding: 0;
+}
+
+.feedback-item {
+  background: white;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  word-wrap: break-word; /* ตัดคำเมื่อข้อความยาว */
+  overflow-wrap: break-word; /* ป้องกันการล้นของข้อความ */
+  max-width: 100%; /* ป้องกันการขยายของ container */
+}
+
+.feedback-user {
+  font-weight: bold;
+  color: #333;
+}
+
+.feedback-text {
+  margin-top: 5px;
+  font-size: 16px;
+  color: #666;
+  word-wrap: break-word; /* ตัดคำหากยาวเกิน */
+  overflow-wrap: break-word; /* ป้องกันการล้น */
+  white-space: pre-wrap; /* คงรูปแบบขึ้นบรรทัดใหม่ */
+}
+
+.feedback-section {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.feedback-input {
+  width: 100%;
+  min-height: 120px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 16px;
+  resize: none;
+  transition: border-color 0.3s ease;
+  font-family: inherit;
+}
+
+.feedback-input:focus {
+  border-color: rgba(5, 195, 111, 1);
+  outline: none;
+}
+
+.feedback-button {
+  background-color: rgba(5, 195, 111, 1);
+  color: white;
+  padding: 12px 18px;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.feedback-button:hover {
+  background-color: rgba(4, 160, 90, 1);
+}
+
+.feedback-button-group {
+  display: flex;
+  gap: 10px; /* ระยะห่างระหว่างปุ่ม */
+  justify-content: flex-end; /* ให้ชิดขวา */
+}
+
+.feedback-button-anonymous {
+  background-color: rgba(255, 140, 0, 1); /* สีส้ม */
+  color: white;
+  padding: 12px 18px;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.feedback-button-anonymous:hover {
+  background-color: rgba(230, 120, 0, 1);
+}
+
+
+

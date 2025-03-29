@@ -1,0 +1,105 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+  pull_request:
+    branches:
+      - develop
+      - main
+
+
+jobs:
+  test:
+    if: github.ref == 'refs/heads/develop' || github.event.pull_request.base.ref == 'develop'
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check if tests exist
+        id: check-tests
+        run: |
+          if [ -d "tests" ] || [ -f "jest.config.js" ] || [ -f "playwright.config.js" ]; then
+            echo "HAS_TESTS=true" >> $GITHUB_ENV
+          else
+            echo "HAS_TESTS=false" >> $GITHUB_ENV
+          fi
+
+      - name: Install Playwright Browsers
+        if: env.HAS_TESTS == 'true'
+        run: npx playwright install --with-deps
+
+      - name: Run Playwright tests
+        if: env.HAS_TESTS == 'true'
+        run: npx playwright test
+
+      - uses: actions/upload-artifact@v4
+        if: env.HAS_TESTS == 'true' && !cancelled()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+
+  build:
+    needs: test
+    if: github.ref == 'refs/heads/develop' && (success() || needs.test.result == 'skipped')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Compose
+        run: |
+          sudo apt-get install docker-compose      
+
+      - name: Build Docker Image
+        run: |
+          docker-compose build
+
+  deploy-main:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Compose
+        run: |
+          sudo apt-get install docker-compose
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+
+      - name: Auto Generate Tag
+        id: tag
+        run: |
+          VERSION=$(date +'%Y%m%d-%H%M%S')
+          echo "NEW_VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Build & Push Docker Image
+        run: |
+          docker-compose build
+          docker tag kuty-frontend:latest ${{ secrets.DOCKER_HUB_USERNAME }}/kuty-frontend:${{env.NEW_VERSION}}
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/kuty-frontend:${{env.NEW_VERSION}}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ env.NEW_VERSION }}
+          name: Release ${{ env.NEW_VERSION }}
+          body: |
+            Automated release
+            - Docker Image: ${{ secrets.DOCKER_HUB_USERNAME }}/kuty-backend:${{ env.DOCKER_TAG }}
+          draft: false
+          prerelease: false

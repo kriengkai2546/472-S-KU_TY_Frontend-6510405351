@@ -40,6 +40,7 @@ export default function Event({ params }) {
     if (userId && eventId) {
       fetchEventData(eventId)
         .then((data) => {
+          console.log(data.data)
           setEventDetails(data);
           setEventName(data.name || "");
           setEventDescription(data.description || "");
@@ -81,7 +82,7 @@ export default function Event({ params }) {
       };
       console.log("Updating event with data:", updatedEvent);
       await editEvent(updatedEvent);
-      handleImageUpload(e, eventId);
+      await handleImageUpload(e, eventId);
       router.push("/created-events");
     } catch (error) {
       console.error("Error updating event:", error);
